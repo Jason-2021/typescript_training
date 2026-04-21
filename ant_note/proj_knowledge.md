@@ -62,3 +62,40 @@ AntD 是這份 Demo 質感的來源，你需要熟悉以下幾個組件的特殊
 
 4. 圖片範例
 ![截圖](./demo.png)
+
+🗺️ 建議閱讀順序 (The Blueprint Approach)
+請依照以下 1 到 4 的順序閱讀，這符合資料流動與元件依賴的關係：
+
+第一站：合約與規格 (Data & Types)
+👉 檔案：src/types/asset.ts ➔ src/mock/data.ts
+
+為什麼先看這裡？ 在 TypeScript 的世界裡，型別（Types）就是系統的合約。你不先了解「一個資產長什麼樣子」，就無法理解後面那些函數到底在傳遞什麼。
+
+觀察重點： 看看 Asset 這個介面（Interface）有哪些屬性？假資料是如何對應這些屬性的？
+
+第二站：骨架與進入點 (App & Layout)
+👉 檔案：src/App.tsx ➔ src/layout/DashboardLayout.tsx
+
+為什麼看這裡？ 這是網頁的入口與大框架。
+
+觀察重點： 看看 App.tsx 是如何把 DashboardLayout 當作外衣包在 Overview 外面的？理解 children 這個 Prop 是如何將畫面「挖空」並填入內容的。
+
+第三站：大腦與中樞神經 (Page Logic)
+👉 檔案：src/pages/Overview.tsx
+
+為什麼看這裡？ 這是整個 Demo 的核心大腦，所有的 useState（記憶）和資料計算都在這裡。
+
+觀察重點：
+
+找到 useState，看它存了什麼資料。
+
+找到 useMemo，看它如何計算總資產與損益。
+
+看 return 區塊，觀察它是如何把變數（如 assets）當作 props 傳給底下的子元件（如 AssetTable）。
+
+第四站：四肢與器官 (UI Components)
+👉 檔案：src/components/StatCard.tsx ➔ AssetTable.tsx ➔ AddAssetModal.tsx
+
+為什麼最後看？ 因為它們是被動的「展示元件」（Presentational Components）。它們自己不生資料，只負責把拿到的資料畫得漂漂亮亮。
+
+觀察重點： 仔細看每個元件最上面的 interface XXXProps，這就是它們對外要求的「輸入規格」。重點觀察 AssetTable 裡面的 columns.render 是如何操作 AntD 的。
